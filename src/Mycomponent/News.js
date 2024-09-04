@@ -54,6 +54,16 @@ export default class News extends Component {
 
     }
   }
+
+  async componentDidMount() {
+    // console.log("cdn")
+    let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=57b510932495419f9c96cb27e56e45b8";
+    let data = await fetch(url) 
+    let parsedData = await data.json()
+    console.log(parsedData)
+    this.setState({articles: parsedData.articles})
+    // console.log(data)
+  }
   
 
   
@@ -64,7 +74,7 @@ export default class News extends Component {
         <div className='d-flex justify-content-center mt-3 flex-wrap'>
           {this.state.articles.map((element)=> {
         return  <div key={element.url}>
-               <NewsItems  title ={element.title.slice(0, 45)} description={element.description.slice(0, 88)} imageUrl ={element.urlToImage} newsUrl={element.url}/> 
+               <NewsItems  title ={element.title?element.title.slice(0, 45):""} description={element.description?element.description.slice(0, 88): ""} imageUrl ={element.urlToImage} newsUrl={element.url}/> 
           </div>
 
           })}
