@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import NewsItems from "./NewsItems";
-
+import './News.css'
 export default class News extends Component {
 
   articles =  [
@@ -50,37 +50,87 @@ export default class News extends Component {
 
     this.state = {
       articles: this.articles,
-      loading: false 
+      loading: false,
+      page:1,
 
     }
   }
 
   async componentDidMount() {
     // console.log("cdn")
-    let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=57b510932495419f9c96cb27e56e45b8";
+    let loader = document.getElementById("loader")
+    loader.style.display = "block"
+    let url = "https://newsapi.org/v2/top-headlines?country=us&apiKey=57b510932495419f9c96cb27e56e45b8&pageSize=20";
     let data = await fetch(url) 
     let parsedData = await data.json()
     console.log(parsedData)
-    this.setState({articles: parsedData.articles})
+    this.setState({articles: parsedData.articles, totalResults: parsedData.totalResults})
+
+    loader.style.display = "none"
     // console.log(data)
   }
   
+  handleNextBtn = async () =>{
+
+     let loader = document.getElementById("loader")
+    loader.style.display = "block"
+    if(this.state.page + 1 > Math.ceil(this.state.totalResults/20)) {
+
+    } else {
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=57b510932495419f9c96cb27e56e45b8&page= ${this.state.page + 1}&pageSize=20`;
+    let data = await fetch(url) 
+    let parsedData = await data.json()
+    console.log(parsedData)
+   
+
+    this.setState({
+      page: this.state.page + 1,
+      articles: parsedData.articles,
+    })
+    loader.style.display = "none"
+  }
+  }
+  handlePrevBtn = async () =>{
+    let url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=57b510932495419f9c96cb27e56e45b8&page= ${this.state.page - 1}&pageSize=20`;
+    let data = await fetch(url) 
+    let parsedData = await data.json()
+    console.log(parsedData)
+   
+
+    this.setState({
+      page: this.state.page - 1,
+      articles: parsedData.articles,
+    })
+  }
 
   
   render() {
     return (
       <div>
-        <h1 className='text-center mt-3'>News</h1>
+       
+<div id='loader' class="dot-spinner">
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+    <div class="dot-spinner__dot"></div>
+</div>
+        <h1 className='text-center mt-3'>NewsMonkey - Top Headlines of US</h1>
         <div className='d-flex justify-content-center mt-3 flex-wrap'>
           {this.state.articles.map((element)=> {
         return  <div key={element.url}>
-               <NewsItems  title ={element.title?element.title.slice(0, 45):""} description={element.description?element.description.slice(0, 88): ""} imageUrl ={element.urlToImage} newsUrl={element.url}/> 
+               <NewsItems  title ={element.title?element.title:""} description={element.description?element.description: ""} imageUrl ={element.urlToImage} newsUrl={element.url}/> 
           </div>
 
           })}
+        </div>
 
-       
-       
+        <div className='container d-flex justify-content-between'>
+          <button disabled={this.state.page <= 1} type='button' className='btn btn-dark' onClick={this.handlePrevBtn}>&larr; Previous</button>
+          <button type='button' className='btn btn-dark' onClick={this.handleNextBtn}>Next &rarr;</button>
         </div>
       
         

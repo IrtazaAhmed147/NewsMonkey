@@ -17,10 +17,10 @@ export default class NewsItems extends Component {
     return (
       <div>
         <div className="card mb-3 me-3" style={{ width: "18rem" }}>
-          <img src={!imageUrl?"https://stat4.bollywoodhungama.in/wp-content/uploads/2024/08/SRK_Net_Worth_Revealed.jpg":imageUrl} className="card-img-top" alt="..." />
+          <img src={!imageUrl?"https://www.washingtonpost.com/wp-apps/imrs.php?src=https://arc-anglerfish-washpost-prod-washpost.s3.amazonaws.com/public/ZI6DT7DPHRASRC2GXPSQRWDC4I.jpg&w=1440":imageUrl} className="card-img-top" alt="..." />
           <div className="card-body">
-            <h5 className="card-title">{title}...</h5>
-            <p className="card-text">{description}...</p>
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{description}</p>
             <a target='_blank' href={newsUrl} className="btn btn-primary btn-sm">Read more</a>
           </div>
         </div>
