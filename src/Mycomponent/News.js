@@ -8,11 +8,11 @@ import PropTypes from 'prop-types';
 export default class News extends Component {
 
 
-  static defaultProps = {
-    country: 'us',
-    pageSize: 6,
-    category: 'general'
-  }
+  // static defaultProps = {
+  //   country: 'us',
+  //   pageSize: 6,
+  //   category: 'general'
+  // }
 
   // static propTypes = {
   //   country: propTypes.string,
@@ -20,10 +20,12 @@ export default class News extends Component {
   //   category: propTypes.string,
   // }
 
+  capatalize = (string)=> {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
 
-
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       articles: [],
@@ -31,55 +33,36 @@ export default class News extends Component {
       page: 1,
 
     }
+    document.title = `NewMonkey - ${this.capatalize(this.props.category)}`
+  }
+
+  async updateNews() {
+
+    this.setState({ loading: true })
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=57b510932495419f9c96cb27e56e45b8&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    let data = await fetch(url)
+    let parsedData = await data.json()
+
+    this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false })
+
   }
 
   async componentDidMount() {
-    // console.log("cdn")
-    this.setState({ loading: true })
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=57b510932495419f9c96cb27e56e45b8&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url)
-    let parsedData = await data.json()
-    // console.log(parsedData)
-    this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults, loading: false })
 
+    this.updateNews()
 
-    // console.log(data)
   }
 
   handleNextBtn = async () => {
 
+    this.setState({ page: this.state.page + 1 })
+    this.updateNews()
 
-    if (this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)) {
-
-    } else {
-      this.setState({ loading: true })
-      let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=57b510932495419f9c96cb27e56e45b8&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-      let data = await fetch(url)
-      let parsedData = await data.json()
-      // console.log(parsedData)
-
-
-      this.setState({
-        page: this.state.page + 1,
-        articles: parsedData.articles,
-        loading: false
-      })
-
-    }
   }
   handlePrevBtn = async () => {
-    this.setState({ loading: true })
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=57b510932495419f9c96cb27e56e45b8&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-    let data = await fetch(url)
-    let parsedData = await data.json()
-    // console.log(parsedData)
 
-
-    this.setState({
-      page: this.state.page - 1,
-      articles: parsedData.articles,
-      loading: false
-    })
+    this.setState({ page: this.state.page - 1 })
+    this.updateNews()
 
   }
 
@@ -88,11 +71,11 @@ export default class News extends Component {
     return (
       <div className='container my-3'>
 
-        <div className='d-flex justify-content-between align-items-center container flex-wrap'>
+        {/* <div className='d-flex justify-content-between align-items-center container flex-wrap'> */}
 
-          <h1 style={{ margin: "35px 0px" }}>NewsMonkey - Top Headlines</h1>
-          <h3 style={{ margin: "35px 0px" }}>Category-{this.props.category}</h3>
-        </div>
+          <h2 className='text-center' style={{ margin: "35px 0px" }}>NewsMonkey - Top {this.capatalize(this.props.category)} Headlines</h2>
+          {/* <h3 style={{ margin: "35px 0px" }}>Category-{}</h3> */}
+        {/* </div> */}
 
         {this.state.loading && <Spinner />}
 
