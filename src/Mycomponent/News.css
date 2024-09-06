@@ -105,4 +105,8 @@
   }
   
 
-  
+  #loader{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+  }
