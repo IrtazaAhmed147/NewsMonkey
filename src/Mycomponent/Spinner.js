@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './News.css'
+// import def from 'ajv/dist/vocabularies/applicator/additionalItems'
 
-export default class Spinner extends Component {
-  render() {
+const Spinner = () => {
+ 
     return (
       <div>
         <div id='loader' className="dot-spinner">
@@ -17,5 +18,7 @@ export default class Spinner extends Component {
 </div>
       </div>
     )
-  }
+  
 }
+
+export default Spinner
