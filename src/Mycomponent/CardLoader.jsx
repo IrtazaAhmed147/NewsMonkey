@@ -1,0 +1,15 @@
+import React from 'react'
+import '../CSS/cardloader.css'
+const CardLoader = () => {
+    return (
+        <>
+            <div class="card">
+                <div class="card_load"></div>
+                <div class="card_load_extreme_title"></div>
+                <div class="card_load_extreme_descripion"></div>
+            </div>
+        </>
+    )
+}
+
+export default CardLoader
