@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../Context/Data'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 
-    const { categoryArr } = useContext(AppContext)
+    const { categoryArr, setPageNo } = useContext(AppContext)
 
     return (
         <div>
@@ -16,7 +17,11 @@ const Navbar = () => {
                 <hr />
                 <ul className='flex justify-center items-center gap-6 py-2 border-b-2  '>
                     {categoryArr?.map((value, i) => {
-                        return <li key={i} className='cursor-pointer hover:bg-neutral-100 p-1 rounded-md'>{value}</li>
+                        return <li onClick={()=> setPageNo(1)} key={i} className='cursor-pointer hover:bg-neutral-100 p-1 rounded-md'>
+                            <Link to={`/news/${value}`}>
+                            {value}
+                            </Link>
+                            </li>
                     })}
 
                 </ul>

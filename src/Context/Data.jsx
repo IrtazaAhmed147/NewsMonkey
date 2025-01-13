@@ -1,10 +1,12 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
 
 export const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
 
+
+    const [pageNo, setPageNo] = useState(1)
 
     const categoryArr = [
 
@@ -20,12 +22,12 @@ export const AppProvider = ({ children }) => {
     ]
 
     const timeSplit = (time) => {
-        const split = time.split('T').join(' ')
+        const split = time?.split('T')?.join(' ')
         return split
 
     }
 
-    return <AppContext.Provider value={{ categoryArr, timeSplit }}>
+    return <AppContext.Provider value={{ categoryArr, timeSplit, pageNo, setPageNo }}>
         {children}
     </AppContext.Provider>
 } 

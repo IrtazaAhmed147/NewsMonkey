@@ -1,10 +1,4 @@
-svg {
-    width: 3.25em;
-    transform-origin: center;
-    animation: rotate4 2s linear infinite;
-   }
-   
-   circle {
+      circle {
     fill: none;
     stroke: hsl(214, 97%, 59%);
     stroke-width: 2;

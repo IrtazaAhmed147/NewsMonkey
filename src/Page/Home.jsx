@@ -14,7 +14,7 @@ const Home = () => {
         queryKey: ['latestNews'],
         queryFn: () => getLatestNews(),
         // enabled: !!title && !!year,
-        staleTime: 10000,
+        staleTime: 30000,
         refetchOnWindowFocus: false,
     })
     const firstNews = data?.articles[0]
