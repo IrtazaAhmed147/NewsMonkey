@@ -17,6 +17,7 @@ const Home = () => {
         staleTime: 30000,
         refetchOnWindowFocus: false,
     })
+    console.log(data)
     const firstNews = data?.articles[0]
 
     return (
@@ -31,7 +32,7 @@ const Home = () => {
                     <h1 className='font-bold text-xl'>{firstNews?.title}</h1>
                     <p>{firstNews?.description}</p>
                     <p>Source: <b>{firstNews?.source.name}</b></p>
-                    <span className='text-sm text-stone-600'>{timeSplit(firstNews.publishedAt)}</span>
+                    <span className='text-sm text-stone-600'>{timeSplit(firstNews?.publishedAt)}</span>
                 </div>
             </div>
             }

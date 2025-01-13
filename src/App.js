@@ -5,6 +5,7 @@ import './App.css';
 import Navbar from './Mycomponent/Navbar';
 import Home from './Page/Home';
 import CategoryNews from './Page/CategoryNews';
+import Footer from './Mycomponent/Footer';
 
 
 
@@ -26,6 +27,8 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='/news/:newsCategory' element={<CategoryNews />} />
         </Routes>
+
+        <Footer/>
       </Router>
 
     </QueryClientProvider>
