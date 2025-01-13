@@ -1,4 +1,4 @@
-import { createContext} from "react";
+import { createContext } from "react";
 
 
 export const AppContext = createContext()
@@ -19,7 +19,13 @@ export const AppProvider = ({ children }) => {
 
     ]
 
-    return <AppContext.Provider value={{categoryArr}}>
+    const timeSplit = (time) => {
+        const split = time.split('T').join(' ')
+        return split
+
+    }
+
+    return <AppContext.Provider value={{ categoryArr, timeSplit }}>
         {children}
     </AppContext.Provider>
 } 

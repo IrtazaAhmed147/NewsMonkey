@@ -3,10 +3,13 @@ import '../CSS/cardloader.css'
 const CardLoader = () => {
     return (
         <>
-            <div class="card">
-                <div class="card_load"></div>
-                <div class="card_load_extreme_title"></div>
-                <div class="card_load_extreme_descripion"></div>
+            <div className="card">
+                <div className="card_load"></div>
+                <div className='w-1/2 h-full'>
+
+                <div className="card_load_extreme_title"></div>
+                <div className="card_load_extreme_descripion"></div>
+                </div>
             </div>
         </>
     )
