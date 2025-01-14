@@ -8,7 +8,7 @@ const HomeCards = (props) => {
 
     return (
         <>
-            <div className='w-80 h-92 hover:bg-neutral-100'>
+            <div className='w-72 h-92 hover:bg-neutral-100'>
                 <a rel="noreferrer" target='_blank' href={url}>
 
                     <img style={{

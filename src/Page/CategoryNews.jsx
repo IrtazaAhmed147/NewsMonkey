@@ -50,11 +50,11 @@ const CategoryNews = () => {
 
             {isFetching && <div> <CardLoader />
             </div>}
-            {!isFetching && <div className='flex w-4/5 justify-center mx-auto gap-3'>
-                <div className='w-2/4'>
+            {!isFetching && <div className='flex w-4/5 justify-center mx-auto gap-3 flex-wrap md:flex-nowrap '>
+                <div className='w-full md:w-2/4'>
                     <img style={{ width: '100%', height: '100%' }} src={firstNews?.urlToImage} alt="" />
                 </div>
-                <div className='w-2/4'>
+                <div className='w-full md:w-2/4'>
                     <h1 className='font-bold text-xl'>{firstNews?.title}</h1>
                     <p>{firstNews?.description}</p>
                     <p>Source: <b>{firstNews?.source.name}</b></p>
@@ -68,7 +68,7 @@ const CategoryNews = () => {
             }} className='text-4xl ms-3 my-3'>Category: {newsCategory}</h1>
 
 
-            <div className='flex gap-3 flex-wrap p-2'>
+            <div className='flex gap-3 flex-wrap p-2 justify-center'>
                 {isFetching && <div style={{ height: '300px' }} className='flex w-full justify-center items-center'>
                     <Loader />
                 </div>}

@@ -28,7 +28,7 @@ const App = () => {
           <Route path='/news/:newsCategory' element={<CategoryNews />} />
         </Routes>
 
-        <Footer/>
+        <Footer/> 
       </Router>
 
     </QueryClientProvider>
