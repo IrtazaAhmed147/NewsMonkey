@@ -11,7 +11,7 @@ const Home = () => {
 
     const { timeSplit } = useContext(AppContext)
     const [imageIndex, setImageIndex] = useState(0)
-    const [translate, setTranslate] = useState(0)
+    // const [translate, setTranslate] = useState(0)
 
     const { data, isFetching } = useQuery({
         queryKey: ['latestNews'],
@@ -20,19 +20,38 @@ const Home = () => {
         staleTime: 30000,
         refetchOnWindowFocus: false,
     })
-    console.log(data)
-    const firstNews = data?.articles[0]
 
-    const handleNextImage = ()=> {
-        setImageIndex(prev=> prev + 1)
-        setTranslate(imageIndex * 300)
-        console.log(translate)
+    const firstNews =  data?.articles[0]
+
+    const itemsPerSlide = Math.floor(window.innerWidth / 290);
+    const totalSlides = Math.ceil(data?.articles.length / itemsPerSlide);
+    const handleNextImage = () => {
+        const maxIndex = Math.ceil(data?.articles.length / itemsPerSlide)
+        // 20 / 2 = 17
+        console.log(imageIndex);
+        console.log(totalSlides);
+        console.log(itemsPerSlide);
+        console.log(maxIndex);
+
+        if (imageIndex < maxIndex) {
+            setImageIndex(prev => prev + 1)
+            // return
+        }
+
     }
-    const handlePrevImage = ()=> {
-        setImageIndex(prev=> prev - 1)
-        setTranslate(imageIndex * 300)
-        console.log(translate)
+    const handlePrevImage = () => {
+
+
+        if (imageIndex > 0) {
+            setImageIndex(prev => prev - 1)
+            // return
+        }
+
     }
+
+    const translate = imageIndex * 290
+    const reverseArr = [...(data?.articles || [])].reverse();
+    console.log(reverseArr)
 
     return (
         <div className='py-6'>
@@ -40,7 +59,7 @@ const Home = () => {
             </div>}
             {!isFetching && <div className='flex w-4/5 justify-center mx-auto gap-3'>
                 <div className='w-2/4'>
-                    <img style={{ width: '100%', height: '100%' }} src={firstNews?.urlToImage} alt="" />
+                    <img style={{ width: '100%', height: '100%' }} src={firstNews?.urlToImage ? firstNews?.urlToImage : 'https://tutorialslink.com/images/default-news-image.png'} alt="" />
                 </div>
                 <div className='w-2/4'>
                     <h1 className='font-bold text-xl'>{firstNews?.title}</h1>
@@ -51,13 +70,34 @@ const Home = () => {
             </div>
             }
 
+{/* slider */}
+            <div className='flex overflow-hidden  w-11/12 mx-auto relative mt-5'>
+                <div style={{ transform: `translateX(-${translate}px)`, transition: 'transform 0.6s ease-in-out' }} className='flex '>
+
+                    {reverseArr?.map((news, i) => {
+                        return <div style={{ width: '290px', height: '230px', }} key={i}>
+                            <a rel="noreferrer" href={news.url} target='_blank' >
+                                <img onClick={() => window.assign} style={{ width: '98%', height: '100%', margin: 'auto' }} src={news?.urlToImage ? news?.urlToImage : 'https://tutorialslink.com/images/default-news-image.png'} alt="slider" />
+
+                            </a>
+
+                        </div>
+                    })}
+                </div>
+
+                <button onClick={() => handlePrevImage()} style={{ transition: 'background-color 0.5s ease' }} className='absolute w-12 top-20 left-4 rounded-full h-12 hover:bg-slate-50 hover:text-neutral-500 flex justify-center items-center text-3xl text-neutral-400 opacity-60'><FaLessThan /></button>
+
+                <button onClick={() => handleNextImage()} style={{ transition: 'background-color 0.5s ease' }} className='absolute w-12 top-20 right-4 rounded-full h-12 hover:bg-slate-50 hover:text-neutral-500 flex justify-center items-center text-3xl text-neutral-400 opacity-60'><FaGreaterThan /></button>
+            </div>
 
             <h1 className='ms-4 mt-4 text-5xl' style={{
                 fontFamily: "'Afacad Flux', serif",
                 fontWeight: 'bold',
             }}>Latest News</h1>
 
-            <div className='flex gap-3 flex-wrap p-2'>
+
+
+            <div className='flex gap-3 flex-wrap p-2 mx-auto' style={{width: '98%'}}>
                 {isFetching && <div style={{ height: '300px' }} className='flex w-full justify-center items-center'>
                     <Loader />
                 </div>}
@@ -66,17 +106,24 @@ const Home = () => {
                 })}
             </div>
             {/* slider */}
-            <div className='flex overflow-hidden gap-1 w-11/12 mx-auto relative mt-5'>
-                <div style={{transform: `translateX(-${translate}px)`,  transition: 'transform 0.3s ease-in-out'}} className='flex gap-1'>
+            {/* <div className='flex overflow-hidden  w-11/12 mx-auto relative mt-5'>
+                <div style={{ transform: `translateX(-${translate}px)`, transition: 'transform 0.6s ease-in-out' }} className='flex '>
 
-                {data?.articles?.map((news, i)=> {
-                    return  <img key={i} style={{width: '300px', height: '230px'}} src={news.urlToImage} alt="" />
-                    
-                })}
+                    {data?.articles?.map((news, i) => {
+                        return <div style={{ width: '290px', height: '230px', }} key={i}>
+                            <a rel="noreferrer" href={news.url} target='_blank' >
+                                <img onClick={() => window.assign} style={{ width: '98%', height: '100%', margin: 'auto' }} src={news?.urlToImage ? news?.urlToImage : 'https://tutorialslink.com/images/default-news-image.png'} alt="slider" />
+
+                            </a>
+
+                        </div>
+                    })}
                 </div>
-                <button onClick={()=> handlePrevImage()} className='absolute w-12 top-16 left-4 rounded-full h-16 hover:bg-neutral-100 flex justify-center items-center'><FaLessThan /></button>
-                <button onClick={()=> handleNextImage()} className='absolute top-16 w-12 rounded-full right-4 h-16 hover:bg-neutral-100 flex justify-center items-center'><FaGreaterThan /></button>
-            </div>
+
+                <button onClick={() => handlePrevImage()} style={{ transition: 'background-color 0.5s ease' }} className='absolute w-12 top-20 left-4 rounded-full h-12 hover:bg-slate-50 hover:text-neutral-500 flex justify-center items-center text-3xl text-neutral-400 opacity-60'><FaLessThan /></button>
+
+                <button onClick={() => handleNextImage()} style={{ transition: 'background-color 0.5s ease' }} className='absolute w-12 top-20 right-4 rounded-full h-12 hover:bg-slate-50 hover:text-neutral-500 flex justify-center items-center text-3xl text-neutral-400 opacity-60'><FaGreaterThan /></button>
+            </div> */}
         </div>
     )
 }
