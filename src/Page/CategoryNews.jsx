@@ -7,11 +7,12 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import CardLoader from '../Mycomponent/CardLoader'
 import { AppContext } from '../Context/Data'
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa6'
+import Poster from '../Mycomponent/Poster'
 
 const CategoryNews = () => {
 
+    const { pageNo, setPageNo } = useContext(AppContext)
     const { newsCategory } = useParams()
-    const { timeSplit, pageNo, setPageNo } = useContext(AppContext)
     const queryClient = useQueryClient();
 
     const { data, isFetching } = useQuery({
@@ -21,28 +22,26 @@ const CategoryNews = () => {
         staleTime: 30000,
         refetchOnWindowFocus: false,
     })
-    console.log(data)
-    const firstNews = data?.articles[0]
+
+
+    const randomNumber = Math.floor(Math.random() * data?.articles?.length)
+    const firstNews = data?.articles[randomNumber]
+
 
     const handlePrevPage = () => {
-        if (pageNo <= 1) {
-            return 
-        }
+        if (pageNo <= 1) return
+
         setPageNo(prev => prev - 1)
-        queryClient?.invalidateQueries(['categoryNews', newsCategory + pageNo]); // Force refetch
+        queryClient?.invalidateQueries(['categoryNews', newsCategory + pageNo]);
     };
     const handleNextPage = () => {
         const value = Math.ceil(data?.totalResults / 12)
-        console.log(value);
-        console.log(pageNo);
-        
-        if(value === pageNo) {
-            console.log('shaba')
-            return
-        }
+
+        if (value === pageNo) return
+
         setPageNo(prev => prev + 1)
-        queryClient?.invalidateQueries(['categoryNews', newsCategory + pageNo]); // Force refetch
-      };
+        queryClient?.invalidateQueries(['categoryNews', newsCategory + pageNo]);
+    };
 
 
     return (
@@ -50,17 +49,7 @@ const CategoryNews = () => {
 
             {isFetching && <div> <CardLoader />
             </div>}
-            {!isFetching && <div className='flex w-4/5 justify-center mx-auto gap-3 flex-wrap md:flex-nowrap '>
-                <div className='w-full md:w-2/4'>
-                    <img style={{ width: '100%', height: '100%' }} src={firstNews?.urlToImage} alt="" />
-                </div>
-                <div className='w-full md:w-2/4'>
-                    <h1 className='font-bold text-xl'>{firstNews?.title}</h1>
-                    <p>{firstNews?.description}</p>
-                    <p>Source: <b>{firstNews?.source.name}</b></p>
-                    <span className='text-sm text-stone-600'>{timeSplit(firstNews?.publishedAt)}</span>
-                </div>
-            </div>}
+            {!isFetching && <Poster firstNews={firstNews} />}
 
             <h1 style={{
                 fontFamily: "'Afacad Flux', serif",
@@ -78,9 +67,9 @@ const CategoryNews = () => {
             </div>
 
             <div className='flex gap-3 items-center justify-center mt-9'>
-                <button onClick={handlePrevPage} className='h-8 bg-neutral-200 flex justify-center items-center w-8 rounded-full cursor-pointer'><FaArrowLeft /></button> 
-                <p> Page {pageNo} </p> 
-                <button  onClick={handleNextPage} className='h-8 bg-neutral-200 flex justify-center items-center w-8 rounded-full cursor-pointer'><FaArrowRight /></button>
+                <button onClick={handlePrevPage} className='h-8 bg-neutral-200 flex justify-center items-center w-8 rounded-full cursor-pointer'><FaArrowLeft /></button>
+                <p> Page {pageNo} </p>
+                <button onClick={handleNextPage} className='h-8 bg-neutral-200 flex justify-center items-center w-8 rounded-full cursor-pointer'><FaArrowRight /></button>
             </div>
         </div>
     )

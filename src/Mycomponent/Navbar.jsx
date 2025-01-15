@@ -1,4 +1,4 @@
-import React, { useContext,  useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import { AppContext } from '../Context/Data'
 import { Link } from 'react-router-dom'
 import '../CSS/nav.css'
@@ -8,6 +8,14 @@ const Navbar = () => {
 
     const { categoryArr, setPageNo } = useContext(AppContext)
     const responsiveUlRef = useRef()
+
+    const handleNavbar = () => {
+        if (responsiveUlRef.current.style.height === '0px') {
+            responsiveUlRef.current.style.height = '270px'
+        } else if (responsiveUlRef.current.style.height === '270px') {
+            responsiveUlRef.current.style.height = '0px'
+        }
+    }
 
     return (
         <div>
@@ -39,36 +47,24 @@ const Navbar = () => {
 
                     </ul>
 
-                    <button onClick={() => {
-                        responsiveUlRef.current.classList.add('h-auto')
-
-                        if (responsiveUlRef.current.className.includes('h-0')) {
-
-                            responsiveUlRef.current.classList.remove('h-0')
-                            responsiveUlRef.current.classList.add('h-auto')
-
-                        } else if (responsiveUlRef.current.className.includes('h-auto')) {
-
-                            responsiveUlRef.current.classList.remove('h-auto')
-                            responsiveUlRef.current.classList.add('h-0')
-
-                        }
-
-                    }} className=' bg-slate-100 flex justify-center items-center p-2 w-8 me-2  rounded-md lg:hidden'>
+                    <button onClick={handleNavbar} className=' bg-slate-100 flex justify-center items-center p-2 w-8 me-2  rounded-md lg:hidden'>
                         <FaBars />
                     </button>
 
                 </div>
-                <div ref={responsiveUlRef} className={`bg-white p-1 overflow-hidden h-0`}>
+
+                {/* responsive Navbar */}
+
+                <div ref={responsiveUlRef} className='resUl hidden bg-white p-1 overflow-hidden ' style={{ height: '0px', transition: 'all 0.4s ease-in-out' }}>
+
                     <ul className='resUl justify-center items-center gap-1 py-2 hidden'>
+
                         {categoryArr?.map((value, i) => {
-                            return <li  key={i} className='cursor-pointer w-full text-center hover:bg-neutral-100 p-1 rounded-md'>
+                            return <li key={i} className='cursor-pointer w-full text-center hover:bg-neutral-100 p-1 rounded-md'>
                                 <Link onClick={() => {
-                                    console.log('log');
-                                    responsiveUlRef.current.classList.remove('h-auto')
-                                    responsiveUlRef.current.classList.add('h-0')
+                                    responsiveUlRef.current.style.height = '0px'
                                     setPageNo(1)
-                                    }} to={`/news/${value}`}>
+                                }} to={`/news/${value}`}>
                                     {value}
                                 </Link>
                             </li>

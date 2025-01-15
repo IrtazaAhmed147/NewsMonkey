@@ -1,28 +1,34 @@
 .container1 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Teen columns banayenge */
-    align-items: center; /* Vertically center karenge content ko */
-    width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* Teen columns banayenge */
+  align-items: center;
+  /* Vertically center karenge content ko */
+  width: 100%;
+}
+
+.left-btn {
+  grid-column: 1;
+  /* Pehle column mein hoga */
+  justify-self: start;
+  /* Left align */
+}
+
+.center-btn {
+  grid-column: 2;
+  /* Beech wale column mein hoga */
+  justify-self: center;
+  /* Center align */
+}
+
+@media only screen and (max-width: 1024px) {
+  .container1 {
+    display: flex !important;
+    justify-content: space-between;
   }
-  
-  .left-btn {
-    grid-column: 1; /* Pehle column mein hoga */
-    justify-self: start; /* Left align */
+
+  .resUl {
+    flex-direction: column;
+    display: flex !important;
   }
-  
-  .center-btn {
-    grid-column: 2; /* Beech wale column mein hoga */
-    justify-self: center; /* Center align */
-  }
-  
-  @media only screen and (max-width: 1024px) {
-    .container1 {
-      display: flex !important;
-      justify-content: space-between;
-    }
-    .resUl{
-      flex-direction: column;
-      transition: 'all 0.5s ease';
-      display: flex !important;
-    }
-  }
+}

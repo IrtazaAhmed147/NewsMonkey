@@ -1,0 +1,18 @@
+
+
+.slick-slide > div > div {
+    width: 290px;
+    height: 200px;
+}
+.slick-prev:before{
+    color: grey !important;
+}
+.slick-next:before{
+    color: grey !important;
+
+}
+@media only screen and (max-width: 480px) {
+        .slick-dots{
+            bottom: -70px !important;
+        }
+}
